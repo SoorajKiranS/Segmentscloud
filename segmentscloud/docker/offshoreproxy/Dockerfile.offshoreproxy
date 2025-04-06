@@ -1,0 +1,5 @@
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY target/segmentscloud-1.0-SNAPSHOT.jar /app/segmentscloud.jar
+EXPOSE 9090
+CMD ["java", "-Dspring.profiles.active=offshore", "-jar", "segmentscloud.jar"]

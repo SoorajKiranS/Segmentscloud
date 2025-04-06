@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  offshoreproxy:
+    build:
+      context: .
+      dockerfile: docker/offshoreproxy/Dockerfile.offshoreproxy
+    ports:
+      - "9090:9090"
+    networks:
+      - proxy_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  shipproxy:
+    build:
+      context: .
+      dockerfile: docker/shipproxy/Dockerfile.shipproxy
+    ports:
+      - "8080:8080"
+    networks:
+      - proxy_network
+    depends_on:
+      offshoreproxy:
+        condition: service_healthy
+
+networks:
+  proxy_network:
+    driver: bridge

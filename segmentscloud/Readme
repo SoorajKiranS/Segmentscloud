@@ -1,0 +1,30 @@
+# SegmentsCloud - Proxy Chain Application
+
+This Java-based application demonstrates a simple two-layer HTTP proxy chain setup using sockets.
+
+## Components:
+1. **ShipProxy** (Port 8080)
+   - Acts as the first-level proxy.
+   - Receives client requests (e.g., via curl or browser).
+   - Forwards the raw HTTP request to OffshoreProxy over a socket.
+
+2. **OffshoreProxy** (Port 9090)
+   - Acts as the second-level proxy.
+   - Receives the request from ShipProxy.
+   - Parses and forwards the request to the actual internet (e.g., example.com).
+   - Returns the real HTTP response back to ShipProxy.
+
+## Flow:
+1. User sends a request through ShipProxy:
+   `curl -x http://localhost:8080 http://httpforever.com/`
+
+2. ShipProxy logs and forwards the HTTP request to OffshoreProxy via socket.
+
+3. OffshoreProxy connects to the destination server (httpforever.com), fetches the response, and sends it back to ShipProxy.
+
+4. ShipProxy returns the response to the user.
+
+## Goal:
+- To simulate a real-world proxy chain.
+- To learn how data flows between layers.
+- To prepare the system for Docker deployment and further enhancements.
